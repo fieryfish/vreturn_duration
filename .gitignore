@@ -4,3 +4,6 @@
 /tags
 *.csv
 *.txt
+*.pyc
+*.npy
+*.pkl

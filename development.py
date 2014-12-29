@@ -34,7 +34,7 @@ def production_time(input_file='./data/tmp.csv'):
     train_df, test_df, df = generate_train_test(df,rd)
 
     write_out_content = cal_write_result(rd, train_df, test_df)
-    rd.output_result(write_out_content, path = './data/result_produce'+rd.start_time+'.txt')
+    rd.output_result(write_out_content, path = './data/training_result/result_produce'+rd.start_time+'.txt')
     rfr_model = rd.RFR_train(df)
 # make sure you have the components dir first
     joblib.dump(enc_model, './components/enc_production.pkl')
@@ -49,10 +49,19 @@ def audit_time(input_file='./data/tmp.csv'):
 
     train_df, test_df, df = generate_train_test(df, rd, 'time_diff_aud')
     write_out_content = cal_write_result(rd, train_df, test_df)
-    rd.output_result(write_out_content, path = './data/result_audit'+rd.start_time+'.txt')
+    rd.output_result(write_out_content, path = './data/training_result/result_audit'+rd.start_time+'.txt')
     rfr_model = rd.RFR_train(df)
     joblib.dump(enc_model, './components/enc_aud.pkl')
     joblib.dump(rfr_model, './components/rfr_aud.pkl')
 
-production_time('./data/training.csv')
-audit_time('./data/training.csv')
+def run(input_file=""):
+    production_time(input_file)
+    audit_time(input_file)
+#run("./data/tmp.csv")
+if len(sys.argv)==2:
+    training_file_path = './data/' + sys.argv[1]
+    print "read training data from "+ training_file_path
+    run(training_file_path)
+else:
+    print "read training data from ./data/training_data.csv"
+    run("./data/training_data.csv")

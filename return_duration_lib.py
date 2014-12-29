@@ -36,7 +36,7 @@ class ReturnDuration:
 
         categorical_df  = pd.concat(enc_arr,axis=1)
         categorical_arr = np.array(categorical_df)
-        if enc_model:
+        if enc_model is None:
             enc_model   = OneHotEncoder().fit(categorical_arr)
             enc_model.transform(categorical_arr).toarray()
         else:
