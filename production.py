@@ -2,10 +2,17 @@
 import os, sys
 import csv
 import datetime
+import imp
+sys.path.append(os.path.join("./"))
+sys.path.insert(0,os.getcwd()+"/lib/")
+#imp.load_source('numpy', './lib')
+#imp.load_source('pandas', './lib')
+#imp.load_source('sklearn.externals', './lib/sklearn')
 import numpy as np
 import pandas as pd
+print pd.__file__
+print np.__file__
 from sklearn.externals import joblib
-sys.path.append(os.path.join("./"))
 from return_duration_lib import ReturnDuration
 # load the path of module
 class Production:
