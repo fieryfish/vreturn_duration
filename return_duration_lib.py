@@ -27,8 +27,8 @@ class ReturnDuration:
         return pd.read_csv(path, sep=sep)
 
     # reconstruct the training data on OneHotEncoder
-    def load_enc_data(self, path, enc_array, enc_model=None):
-        df = self.load_raw_data(path)
+    def load_enc_data(self, path, enc_array, enc_model=None, sep = ','):
+        df = self.load_raw_data(path, sep = sep)
         enc_arr = []
         for e in enc_array:
             enc_arr.append(df[e])
@@ -43,8 +43,8 @@ class ReturnDuration:
 
         return [categorical_arr, df, enc_model]
 
-    def load_data(self, path, enc_array=[], un_enc_array=[], enc_model=None):
-        categorical_arr,df,enc_model = self.load_enc_data(path, enc_array, enc_model)
+    def load_data(self, path, enc_array=[], un_enc_array=[], enc_model=None, sep = ','):
+        categorical_arr,df,enc_model = self.load_enc_data(path, enc_array, enc_model, sep = sep)
         preprocessed_data            = pd.DataFrame(categorical_arr)
         total_training_data          = [preprocessed_data]
         for e in un_enc_array:

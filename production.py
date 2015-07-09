@@ -2,16 +2,10 @@
 import os, sys
 import csv
 import datetime
-import imp
 sys.path.append(os.path.join("./"))
-sys.path.insert(0,os.getcwd()+"/lib/")
-#imp.load_source('numpy', './lib')
-#imp.load_source('pandas', './lib')
-#imp.load_source('sklearn.externals', './lib/sklearn')
+#sys.path.insert(0,os.getcwd()+"/lib/")
 import numpy as np
 import pandas as pd
-print pd.__file__
-print np.__file__
 from sklearn.externals import joblib
 from return_duration_lib import ReturnDuration
 # load the path of module
@@ -42,7 +36,7 @@ class Production:
         return result
 
 #production part
-    def production_prediction(self, input_path='./data/to_predict_data.csv', output_path='./data/tmp.csv'):
+    def production_prediction(self, input_path='./data/to_predict_data.csv', output_path='./data/tmp.csv', sep=','):
         enc_array     = ['ReturnCompanyID','StockNo']
         un_enc_array  = ['FactNum']
         df, enc_model = self.rd.load_data(input_path,enc_array, un_enc_array, self.pro_enc)
@@ -50,9 +44,9 @@ class Production:
         return result
 
 #audit part
-    def audit_prediction(self, input_path='./data/to_predict_data.csv', output_path='./data/tmp.csv'):
+    def audit_prediction(self, input_path='./data/to_predict_data.csv', output_path='./data/tmp.csv',sep =','):
         enc_array_aud = ['FirDeptID']
-        df, enc_model = self.rd.load_data(input_path, enc_array_aud, enc_model=self.aud_enc)
+        df, enc_model = self.rd.load_data(input_path, enc_array_aud, enc_model=self.aud_enc, sep='\t')
         result = self.generate_save_result(df, output_path, model=self.aud_model)
         return result
 
@@ -62,8 +56,10 @@ p = Production()
 if len(sys.argv)==2:
     to_predict_data = './data/' + sys.argv[1]
     print "read to predict data from "+ to_predict_data
-    aud_result = p.audit_prediction(input_path=to_predict_data, output_path='./data/prediction_result/pro'+p.rd.start_time+'.csv')
-    pro_result = p.production_prediction(input_path=to_predict_data, output_path = './data/prediction_result/aud'+p.rd.start_time+'.csv')
+    aud_result = p.audit_prediction(input_path=to_predict_data, output_path='./data/prediction_result/pro'+p.rd.start_time+'.csv', sep ='\t')
+    pro_result = p.production_prediction(input_path=to_predict_data, output_path = './data/prediction_result/aud'+p.rd.start_time+'.csv', sep ='\t')
+    print 1111
+    print aud_result
 
 else:
     aud_result = p.audit_prediction(output_path = './data/prediction_result/pro'+p.rd.start_time+'.csv')
